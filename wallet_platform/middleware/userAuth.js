@@ -1,21 +1,22 @@
 import express from "express";
-import logServices from "./../services/logServices.js"
+import logServices from "./../services/logServices.js";
 
 const authRouter=express.Router();
 
-authRouter.all("*",async(req, res, next) => {
+authRouter.use(async (req, res, next) => {
     try{
-        if (req.path=="/login" || req.path.startsWith("/login/")) {
 
+        if (req.path=="/login" || req.path.startsWith("/login/")) {
+            
             return next();
     
-        };
+        }
 
         const authHeader = req.headers.authorization;
 
         const tokenFromHeader = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
         
-        const tokenFromCookie = req.cookies.auth_token;
+        const tokenFromCookie = req.cookies?.auth_token;
         
         const token = tokenFromHeader || tokenFromCookie;
 
@@ -23,11 +24,11 @@ authRouter.all("*",async(req, res, next) => {
             const decoded = await logServices.verifyToken(token);
 
             if(decoded){
-                req.id = decoded.id;
+                req.user = decoded.id;
                 return next();
-            } else {
-                return res.status(401).json({error: "Unauthorized access"});
             };
+
+                return res.status(401).json({error: "Unauthorized access"});
         };
 
         return res.status(401).json({error: "Unauthorized access"});

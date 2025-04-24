@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import * as crypto from "crypto";
 
 const saltRounds=10;
@@ -29,7 +29,7 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
         }
       );
     });
-    
+
   };
 
 
