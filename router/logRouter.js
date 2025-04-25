@@ -11,4 +11,8 @@ logRouter.post("/old", (req, res) => {
     logController.loginUser(req, res);
 });
 
+logRouter.get("/logout", (req, res) => {
+    logController.logoutUser(req, res);
+});
+
 export default logRouter;

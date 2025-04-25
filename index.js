@@ -4,9 +4,13 @@ import cookieParser from "cookie-parser";
 
 import authRouter from "./middleware/userAuth.js";
 import logRouter from "./router/logRouter.js";
+import userRouter from "./router/userRouter.js";
+import eventRouter from "./router/eventRouter.js";
+import dbConnector from "./config/db_connector.js";
 
 const app = express();
 dotenv.config();
+dbConnector.connectDB();
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,6 +20,11 @@ app.use(cookieParser(process.env.SECRET_KEY));
 
 app.use("/",authRouter);
 app.use("/login",logRouter);
+app.use("/user",userRouter);
+app.use("/event",eventRouter);
+app.use((req, res, next) => {
+    res.status(404).json({ message: "Route not found" });
+});
 
 const server=app.listen(PORT, () => {
 

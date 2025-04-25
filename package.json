@@ -1,7 +1,7 @@
 {
-  "name": "wallet_platform",
+  "name": "EchoAlbum",
   "version": "1.0.0",
-  "description": "wallet platform server",
+  "description": "Platform for users to upload and collaborate on albums",
   "main": "index.js",
   "type": "module",
   "scripts": {
