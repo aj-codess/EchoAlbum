@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
+const albumItemSchema = new mongoose.Schema({
+    senderId: {
+      type: String,
+      required: true,
+    },
+    ugcUrl: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: Date,
+      default: Date.now,
+    }
+  });
+
 const eventSchema = new mongoose.Schema({
     eventId: {
         type: String,
@@ -26,6 +41,7 @@ const eventSchema = new mongoose.Schema({
         type: String,
         unique:true
     }],
+    album:[albumItemSchema],
     ownerId: {
         type: String,
         required: true

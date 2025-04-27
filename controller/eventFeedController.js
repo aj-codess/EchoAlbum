@@ -13,6 +13,7 @@ hooks.on("webhook",async (req,res) => {
         const payload=req.body;
 
         if(queue.size()>=100){
+            queue.updateFailed();
             return res.status(429).send("Too Many Requests");
         };
 
@@ -21,7 +22,8 @@ hooks.on("webhook",async (req,res) => {
         if(!isAppended){
             const reTrigger=await queue.enqueue(payload);
             if(!reTrigger){
-                return res.status(500).send("Failed to enqueue the payload");
+                queue.updteFailed();
+                return res.status(429).send("Failed to enqueue the payload");
             };
         };
 
@@ -29,7 +31,7 @@ hooks.on("webhook",async (req,res) => {
 
     } catch(error){
         console.log("Internal Server Error With Webhook - ",error.message);
-        res.status(500).send("Server Related Error");
+        return res.status(500).send("Server Related Error");
     }
 });
 
