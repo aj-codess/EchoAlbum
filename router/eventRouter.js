@@ -27,4 +27,8 @@ eventRouter.post("/makeOpen", (req, res) => {
     eventController.makeOpen(req, res);
 });
 
+eventRouter.get("/", (req, res) => {
+    eventController.getAllEvents(req, res);
+});
+
 export default eventRouter;

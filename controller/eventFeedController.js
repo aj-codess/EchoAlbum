@@ -1,14 +1,8 @@
-import WebHooks from "node-webhooks";
+import { EventEmitter } from 'events'; 
 import manager from "./../services/engine.js";
-import event from "./../models/eventModel.js";
+import Event from "./../models/eventModel.js";
 
-const hooks = new WebHooks({
-    paths: {
-        github: '/webhook',
-      },
-      db: {},
-  });
-
+const hooks = new EventEmitter(); 
 
 hooks.on("webhook",async (req,res) => {
     try{

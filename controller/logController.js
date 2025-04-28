@@ -15,9 +15,9 @@ const cookieOptions = {
 const createUser = async (req, res) => {
   try {
 
-    const { gmail, username, password, phone } = req.body;
+    const { email , username, password, phone } = req.body;
 
-    if (!gmail || !password) {
+    if (!email || !password) {
       return res.status(400).json({ error: "Gmail and Password Required" });
     };
 
@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
 
     const newUser=new User({
       id: userId,
-      email: gmail,
+      email: email,
       username: username,
       password: password,
       phone: phone

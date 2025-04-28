@@ -167,10 +167,29 @@ const makeOpen = async (req, res) => {
 
 
 
+const getAllEvents = async (req, res) => {
+    try{
+
+        const eventIds = await Event.find({}, { eventId: 1, _id: 0 });
+
+        if(eventIds && eventIds.length > 0){
+            return res.status(200).json({ message: "Events fetched successfully", events });
+        } else{
+            return res.status(404).json({ message: "No events found" });
+        };
+
+    } catch(error){
+        console.error("Error getting all events:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
 export default {
     createEvent,
     deleteEvent,
     getSubmembers,
     acceptInEvent,
-    makeOpen
+    makeOpen,
+    getAllEvents
 }
