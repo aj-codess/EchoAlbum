@@ -1,51 +1,89 @@
-class queue{
-    
+class QueueManager {
     constructor() {
-        this.queue = [];
-        this.processed=0;
-        this.failed=0;
+      this.queues = new Map();
     }
-
-    enqueue(item) {
-        try{
-            if(!item){
-                failed++;
-                return false;
-            };
-
-            this.queue.push(item);
-            processed++;
-            return true;
-        } catch(error){
-            failed++;
-            return false;
+  
+    _initQueue(id) {
+      if (!this.queues.has(id)) {
+        this.queues.set(id, {
+          queue: [],
+          totalPayload,
+          processed: 0,
+          failed: 0
+        });
+      }
+    }
+  
+    enqueue(id, item) {
+      this._initQueue(id);
+  
+      const q = this.queues.get(id);
+  
+      try {
+        if (!item) {
+          q.failed++;
+          return false;
         }
-    }
-
-    dequeue() {
-        return this.queue.isEmpty() ? "Queue is empty" : this.queue.shift();
-    }
-
-    isEmpty() {
-        return this.queue.length === 0;
-    }
-
-    size() {
-        return this.queue.length;
-    }
-
-    peek() {
-        return this.queue.isEmpty() ? "Queue is empty" : this.queue[0];
-    }
-
-    clear() {
-        this.queue = [];
+  
+        q.queue.push(item);
+        q.processed++;
         return true;
+      } catch (error) {
+        q.failed++;
+        return false;
+      }
+    }
+  
+    dequeue(id) {
+      this._initQueue(id);
+  
+      const q = this.queues.get(id);
+  
+      if (q.queue.length === 0) {
+        return "Queue is empty";
+      }
+  
+      return q.queue.shift();
     }
 
-    updateFailed() {
-        this.failed++;
+  
+    isEmpty(id) {
+      this._initQueue(id);
+      return this.queues.get(id).queue.length === 0;
     }
-}
-
-export default queue;
+  
+    size(id) {
+      this._initQueue(id);
+      return this.queues.get(id).queue.length;
+    }
+  
+    peek(id) {
+      this._initQueue(id);
+  
+      const q = this.queues.get(id);
+  
+      if (q.queue.length === 0) {
+        return "Queue is empty";
+      }
+      return q.queue[0];
+    }
+  
+    clear(id) {
+      this._initQueue(id);
+      this.queues.get(id).queue = [];
+      return true;
+    }
+  
+    updateFailed(id) {
+      this._initQueue(id);
+      this.queues.get(id).failed++;
+    }
+  
+    getStats(id) {
+      this._initQueue(id);
+      const { processed, failed ,totalPayload} = this.queues.get(id);
+      return { processed, failed,totalPayload };
+    }
+  }
+  
+  export default QueueManager;

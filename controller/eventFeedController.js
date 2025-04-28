@@ -1,5 +1,7 @@
 import WebHooks from "node-webhooks";
-import queue from "./../services/engine.js";
+import QueueManager from "./../services/engine.js";
+import utility from "../services/utility.js";
+import event from "../models/eventModel.js";
 
 const hooks = new WebHooks({
     paths: {
@@ -10,19 +12,20 @@ const hooks = new WebHooks({
 
 hooks.on("webhook",async (req,res) => {
     try{
-        const payload=req.body;
+        const {eventId,ugcUrl}=req.body;
+        const id=req.user;
 
-        if(queue.size()>=100){
-            queue.updateFailed();
+        if(QueueManager.size(eventId)>=100){
+            QueueManager.updateFailed(eventId);
             return res.status(429).send("Too Many Requests");
         };
 
-        const isAppended=await queue.enqueue(payload);
+        const isAppended=await QueueManager.enqueue(eventId,{id,ugcUrl});
 
         if(!isAppended){
-            const reTrigger=await queue.enqueue(payload);
+            const reTrigger=await QueueManager.enqueue(eventId,{id,ugcUrl});
             if(!reTrigger){
-                queue.updteFailed();
+                QueueManager.updateFailed(eventId);
                 return res.status(429).send("Failed to enqueue the payload");
             };
         };
