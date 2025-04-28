@@ -1,17 +1,19 @@
 import WebHooks from "node-webhooks";
-import QueueManager from "./../services/engine.js";
-import utility from "../services/utility.js";
-import event from "../models/eventModel.js";
+import manager from "./../services/engine.js";
+import event from "./../models/eventModel.js";
 
 const hooks = new WebHooks({
     paths: {
         github: '/webhook',
       },
+      db: {},
   });
 
 
 hooks.on("webhook",async (req,res) => {
     try{
+        const QueueManager=new manager();
+
         const {eventId,ugcUrl}=req.body;
         const id=req.user;
 
@@ -31,6 +33,8 @@ hooks.on("webhook",async (req,res) => {
         };
 
         res.status(202).send("Webhook Payload Received");
+
+        QueueManager.processQueue(eventId);
 
     } catch(error){
         console.log("Internal Server Error With Webhook - ",error.message);

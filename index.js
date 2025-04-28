@@ -9,6 +9,7 @@ import userRouter from "./router/userRouter.js";
 import eventRouter from "./router/eventRouter.js";
 import dbConnector from "./config/db_connector.js";
 import eventFeedRouter from "./router/eventFeedRouter.js";
+import metricsRouter from "./router/metrics.js";
 
 const app = express();
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/login",logRouter);
 app.use("/user",userRouter);
 app.use("/event",eventRouter);
 app.use("/eventFeed",eventFeedRouter);
+app.use("/metrics",metricsRouter);
 app.use((req, res, next) => {
     res.status(404).json({ message: "Route not found" });
 });

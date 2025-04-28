@@ -1,5 +1,6 @@
 import Event from "./../models/eventModel.js";
 import utility from "./../services/utility.js";
+import QueueManager from "./../services/engine.js";
 
 const createEvent = async (req, res) => {
     try{

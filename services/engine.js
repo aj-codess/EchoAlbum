@@ -1,4 +1,6 @@
-class QueueManager {
+import Event from "./../models/event.js";
+
+class manager {
     constructor() {
       this.queues = new Map();
     }
@@ -9,7 +11,9 @@ class QueueManager {
           queue: [],
           totalPayload,
           processed: 0,
-          failed: 0
+          failed: 0,
+          queueDelay:300,
+          isProcessing: false,
         });
       }
     }
@@ -35,15 +39,12 @@ class QueueManager {
     }
   
     dequeue(id) {
-      this._initQueue(id);
   
-      const q = this.queues.get(id);
-  
-      if (q.queue.length === 0) {
+      if (this.queues.get(id).length === 0) {
         return "Queue is empty";
       }
   
-      return q.queue.shift();
+      return queue.shift();
     }
 
   
@@ -84,6 +85,66 @@ class QueueManager {
       const { processed, failed ,totalPayload} = this.queues.get(id);
       return { processed, failed,totalPayload };
     }
+
+
+    async processor(id){
+
+        if (this.queues.get(id).isProcessing) {
+            return;
+        }
+
+        const timerInterval=setInterval(async () => {
+
+            if(this.queues.get(id).queue.length===0){
+                this.queues.get(id).isProcessing=false;
+                clearInterval(timerInterval);
+                return;
+            };
+
+            this.queues.get(id).isProcessing=true;
+
+            try{
+
+                await Event.findOneAndUpdate(
+                    {eventId:id},
+                    {$push:{album:this.dequeue(id)}}
+                );
+
+                console.log(`Successfully processed an item for event ${id}`);
+
+            } catch(error){
+                clearInterval(timerInterval);
+                console.log("Error in processing the queue and Writing to Db - ",error.message);
+                return;
+            };
+
+        }, this.queues.get(id).queueDelay);
+    }
+
+
+    processQueue(id){
+        try{
+            const queueObj = this.queues.get(id);
+
+            if (!queueObj) {
+                console.error(`No queue found for ID: ${id}`);
+                return;
+            }
+    
+            if (queueObj.queue.length === 0) {
+                queueObj.isProcessing = false;
+                return;
+            }
+    
+            if (!queueObj.isProcessing) {
+                queueObj.isProcessing = true;
+                this.processor(id);
+            }
+
+        } catch(error){
+            console.log("Error in processing the queue - ",error.message);
+        }
+    }
   }
   
-  export default QueueManager;
+  export default manager;
