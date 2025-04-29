@@ -9,8 +9,8 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 
-app.use("/", webhookRoutes);
-app.use("/", metricsRoutes);
+app.use("/api/v1", require("./routes"));
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

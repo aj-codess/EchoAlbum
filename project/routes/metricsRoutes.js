@@ -3,6 +3,6 @@ import { getMetrics } from "./../controller/metricsController.js";
 
 const router = express.Router();
 
-router.get("/metrics", getMetrics);
+router.get("/", getMetrics);
 
 export default router;
