@@ -16,7 +16,7 @@ authRouter.use(async (req, res, next) => {
 
         const tokenFromHeader = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
         
-        const tokenFromCookie = req.cookies?.auth_token;
+        const tokenFromCookie = req.cookies?.token;
         
         const token = tokenFromHeader || tokenFromCookie;
 
@@ -33,7 +33,7 @@ authRouter.use(async (req, res, next) => {
 
         return res.status(401).json({error: "Unauthorized access"});
     } catch(error){
-        console.error("Error in User Authentication middleware: ", error.message);
+        console.error("Error in User Authentication middleware: ", error);
         res.status(500).json({error: "Internal Server Error"});
     }
 });

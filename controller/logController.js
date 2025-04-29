@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
 
       const { gmail, password } = req.body;
 
-      const userObj=await User.findOne({email});
+      const userObj=await User.findOne({gmail});
 
       if(!userObj || !(await userObj.matchPassword(password))){
 
