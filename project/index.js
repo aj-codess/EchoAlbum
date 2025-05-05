@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import router from "./routes/index.js";
 
 import webhookRoutes from "./routes/webhookRoutes.js";
 import metricsRoutes from "./routes/metricsRoutes.js";
@@ -9,7 +10,7 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 
-app.use("/api/v1", require("./routes"));
+app.use("/api/v1", router);
 
 
 app.listen(PORT, () => {

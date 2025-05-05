@@ -5,7 +5,7 @@ import metricsRoutes from "./metricsRoutes.js";
 
 const router = express.Router();
 
-app.use("/webhook", webhookRoutes);
-app.use("/metrics", metricsRoutes);
+router.use("/webhook", webhookRoutes);
+router.use("/metrics", metricsRoutes);
 
 export default router;
