@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cookieParser(process.env.SECRET_KEY));
+app.use(cookieParser());
 
 app.use("/",authRouter);
 app.use("/login",logRouter);

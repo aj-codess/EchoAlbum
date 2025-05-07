@@ -5,7 +5,7 @@ const getUser = async (req, res) => {
     try{
 
         const userId = req.user;
-        const user = await User.findById(userId).select("-password");
+        const user = await User.findOne({id:userId}).select("-password");
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -23,7 +23,7 @@ const updateUser=async (req, res) => {
         const userId = req.user;
         const { name, email, phone, password } = req.body;
 
-        const user = await User.findById(userId);
+        const user = await User.findOne({id:userId});
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -47,7 +47,7 @@ const deleteAccount= async (req, res) => {
     try {
       const userId = req.user;
   
-      const user = await User.findByIdAndDelete(userId);
+      const user = await User.findOneAndDelete({id:userId});
   
       if (!user) {
         return res.status(404).json({ error: "User not found" });
