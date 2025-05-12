@@ -53,7 +53,7 @@ const deleteAccount= async (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
   
-      res.clearCookie("token", cookieOptions);
+      res.clearCookie("authToken", cookieOptions);
       return res.status(200).json({ message: "Account deleted successfully" });
     } catch (error) {
       console.error("Error in deleteAccount: ", error.message);

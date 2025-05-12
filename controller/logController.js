@@ -35,7 +35,7 @@ const createUser = async (req, res) => {
 
     const token = await logServices.signToken(user.id);
 
-    res.cookie('token', token, cookieOptions);
+    res.cookie("authToken", token, cookieOptions);
 
             return res.status(200).json({
                 username: user.username,
@@ -69,7 +69,7 @@ const loginUser = async (req, res) => {
 
       const token = await logServices.signToken(userObj.id);
       
-      res.cookie("token", token, cookieOptions);
+      res.cookie("authToken", token, cookieOptions);
 
   } catch (error) {
     console.error("Error in loginUser: ", error.message);
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.clearCookie("token", cookieOptions);
+    res.clearCookie("authToken", cookieOptions);
     return res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.error("Error in logout: ", error.message);

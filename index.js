@@ -10,8 +10,11 @@ import eventRouter from "./router/eventRouter.js";
 import dbConnector from "./config/db_connector.js";
 import eventFeedRouter from "./router/eventFeedRouter.js";
 import metricsRouter from "./router/metrics.js";
+import logServices from "./services/logServices.js";
 
 const app = express();
+logServices.writePrivatePublic();
+logServices.loadPersistentKeys();
 dotenv.config();
 dbConnector.connectDB();
 
