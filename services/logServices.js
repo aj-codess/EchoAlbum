@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as crypto from "crypto";
+import fs from "fs";
 
 const saltRounds=10;
 

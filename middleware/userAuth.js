@@ -16,7 +16,7 @@ authRouter.use(async (req, res, next) => {
 
         const tokenFromHeader = authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
         
-        const tokenFromCookie = req.cookies?.token;
+        const tokenFromCookie = req.cookies?.authToken;
         
         const token = tokenFromHeader || tokenFromCookie;
 
