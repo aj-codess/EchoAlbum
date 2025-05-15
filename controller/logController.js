@@ -71,6 +71,11 @@ const loginUser = async (req, res) => {
       
       res.cookie("authToken", token, cookieOptions);
 
+    return res.status(200).json({
+                username: userObj.username,
+                message: 'User Created Successfully',
+            });
+
   } catch (error) {
     console.error("Error in loginUser: ", error.message);
     res.status(500).json({ error: "Internal Server Error" });
