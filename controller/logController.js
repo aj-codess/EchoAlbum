@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
     };
 
     const userId=utility.genId();
-
+//hash password
     const newUser=new User({
       id: userId,
       email: email,
